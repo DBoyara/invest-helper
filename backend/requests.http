@@ -1,1 +1,23 @@
+GET http://localhost:9000/api/trading?dateStart=2022-01-28&dateEnd=2022-01-29
+Accept: application/json
+
+###
+GET http://localhost:9000/api/trading
+Accept: application/json
+
+###
+POST http://localhost:9000/api/trading
+Content-Type: application/json
+
+{
+  "tiker": "SBER",
+  "type": "buy",
+  "price": 242.3,
+  "count": 5,
+  "lot": 10,
+  "commission": 0.04,
+  "commission_type": "percent"
+}
+
+###
 http://localhost:9000/api/health

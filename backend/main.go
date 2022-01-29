@@ -7,7 +7,7 @@ import (
 
 	"github.com/DBoyara/invest-helper/common"
 	"github.com/DBoyara/invest-helper/pkg/repository"
-	"github.com/DBoyara/invest-helper/routes"
+	"github.com/DBoyara/invest-helper/router"
 	"github.com/DBoyara/invest-helper/third_party"
 	"github.com/gofiber/fiber/v2"
 
@@ -39,7 +39,7 @@ func main() {
 	app.Use(cors.New(configDefaultCORS))
 	app.Use(fiberLogger.New(configDefaultLogger))
 
-	routes.SetupRoutes(app)
+	router.SetupRoutes(app)
 	// 404 Handler
 	app.Use(func(c *fiber.Ctx) error {
 		return c.SendStatus(404) // => 404 "Not Found"
