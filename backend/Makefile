@@ -31,4 +31,4 @@ build-docker: dep ## Build docker.
 	go build -o invest-bot main.go
 
 migrate:
-	@dbmate -u "postgres://user:pass@localhost:5433/invest-bot?sslmode=disable" --no-dump-schema up
+	@dbmate -u "postgres://user:pass@localhost:5433/invest-helper?sslmode=disable" --no-dump-schema up

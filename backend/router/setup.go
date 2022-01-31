@@ -1,4 +1,4 @@
-package routes
+package router
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -12,4 +12,9 @@ func SetupRoutes(app *fiber.App) {
 	common := api.Group("/health")
 	common.Get("", HealthCheck)
 
+	PASSGEN = api.Group("/pass-gen")
+	SetupPassGenRoutes()
+
+	TRADING = api.Group("/trading")
+	SetupTradingRoutes()
 }
