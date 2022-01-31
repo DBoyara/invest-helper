@@ -3,7 +3,6 @@ import { Component } from 'react';
 
 import passGenApi from './api';
 
-
 class PassGen extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +15,7 @@ class PassGen extends Component {
             lowerCaseCount: null,
             upperCaseCount: null,
             numbersCount: null,
-            specialChairCount: null
+            specialChairCount: null,
         };
 
         this.getPass = this.getPass.bind(this);
@@ -33,7 +32,7 @@ class PassGen extends Component {
             error: null,
             isPassLoaded: false,
             isPassRequested: true,
-            pass: null
+            pass: null,
         });
 
         if (!lowerCaseCount || parseInt(lowerCaseCount) < 3) {
@@ -68,7 +67,12 @@ class PassGen extends Component {
             return;
         }
 
-        const params = { lowerCase: lowerCaseCount, upperCase: upperCaseCount, numbers: numbersCount, specialChair: specialChairCount };
+        const params = {
+            lowerCase: lowerCaseCount,
+            upperCase: upperCaseCount,
+            numbers: numbersCount,
+            specialChair: specialChairCount,
+        };
 
         const resp = await passGenApi.getPass(params);
 
@@ -81,28 +85,23 @@ class PassGen extends Component {
                 lowerCaseCount: null,
                 upperCaseCount: null,
                 numbersCount: null,
-                specialChairCount: null
+                specialChairCount: null,
             });
         } else {
-            console.error(resp)
+            console.error(resp);
             this.setState({
                 error: { message: await resp.text() },
                 isPassRequested: false,
                 lowerCaseCount: null,
                 upperCaseCount: null,
                 numbersCount: null,
-                specialChairCount: null
+                specialChairCount: null,
             });
         }
     }
 
     render() {
-        const {
-            error,
-            isPassLoaded,
-            isPassRequested,
-            pass,
-        } = this.state;
+        const { error, isPassLoaded, isPassRequested, pass } = this.state;
         return (
             <Container>
                 <Header>Сгенерировать пароль</Header>
@@ -149,15 +148,17 @@ class PassGen extends Component {
                             </Form.Field>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Button fluid primary>Run</Form.Button>
+                            <Form.Button fluid primary>
+                                Run
+                            </Form.Button>
                         </Form.Group>
                     </Form>
                 </Segment>
-                {isPassRequested &&
+                {isPassRequested && (
                     <Segment loading={!isPassLoaded}>
-                        <Header as='h3'>{pass}</Header>
+                        <Header as="h3">{pass}</Header>
                     </Segment>
-                }
+                )}
             </Container>
         );
     }

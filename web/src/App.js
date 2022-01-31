@@ -6,6 +6,8 @@ import { Container } from 'semantic-ui-react';
 import SideBar from './SideBar';
 import Main from './Main';
 import PassGen from './pass-gen/Pass-gen';
+import TradingRecord from './trading/TradingRecord';
+import TradingLog from './trading/TradingLog';
 
 class App extends Component {
     render() {
@@ -15,6 +17,8 @@ class App extends Component {
                 <Container>
                     <Switch>
                         <Route exact path="/pass-gen" component={PassGen} />
+                        <Route exact path="/trading" component={TradingRecord} />
+                        <Route exact path="/trading/log" component={TradingLog} />
                         <Route path="/" component={Main} />
                     </Switch>
                 </Container>

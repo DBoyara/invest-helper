@@ -14,6 +14,12 @@ class SideBar extends Component {
                     <NavLink component={Menu.Item} to="/pass-gen">
                         Генератор паролей
                     </NavLink>
+                    <NavLink component={Menu.Item} to="/trading">
+                        TradingRecord
+                    </NavLink>
+                    <NavLink component={Menu.Item} to="/trading/log">
+                        TradingLog
+                    </NavLink>
                 </Menu.Menu>
             </Menu>
         );

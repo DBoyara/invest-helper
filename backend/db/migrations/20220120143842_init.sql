@@ -23,6 +23,7 @@ create table if not exists trading_logs
     datetime timestamptz not null default now(),
     tiker varchar(8),
     type varchar(16),
+    is_open boolean default true not null,
     price decimal not null,
     count integer not null,
     lot integer not null,

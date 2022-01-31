@@ -1,4 +1,17 @@
-GET http://localhost:9000/api/trading?dateStart=2022-01-28&dateEnd=2022-01-29
+GET http://localhost:9000/api/trading/commissions
+Accept: application/json
+
+###
+PUT http://localhost:9000/api/trading/close
+Content-Type: application/json
+
+{
+  "ids": ["3","4"],
+  "is_open": false
+}
+
+###
+GET http://localhost:9000/api/trading?dateStart=2022-01-28&dateEnd=2022-01-31
 Accept: application/json
 
 ###
@@ -11,8 +24,8 @@ Content-Type: application/json
 
 {
   "tiker": "SBER",
-  "type": "buy",
-  "price": 242.3,
+  "type": "sell",
+  "price": 254.3,
   "count": 5,
   "lot": 10,
   "commission": 0.04,

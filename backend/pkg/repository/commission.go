@@ -6,13 +6,13 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func GetCommissions() (*models.Commission, error) {
-	var commission *models.Commission
+func GetCommissions() ([]*models.Commission, error) {
+	var res []*models.Commission
 
-	err := connPool.QueryRow(
+	rows, err := connPool.Query(
 		context.Background(),
-		"select value, type from commissions",
-	).Scan(&commission.Value, &commission.Type)
+		"select value, type from commissions order by 1",
+	)
 
 	if err != nil {
 		if err == pgx.ErrNoRows {
@@ -22,5 +22,17 @@ func GetCommissions() (*models.Commission, error) {
 		return nil, err
 	}
 
-	return commission, nil
+	for rows.Next() {
+		tmp := &models.Commission{}
+
+		if err = rows.Scan(
+			&tmp.Value,
+			&tmp.Type); err != nil {
+			return res, err
+		}
+
+		res = append(res, tmp)
+	}
+
+	return res, nil
 }

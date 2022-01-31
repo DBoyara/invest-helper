@@ -7,6 +7,7 @@ type TradingLog struct {
 	Datetime         time.Time `json:"datetime,omitempty"`
 	Tiker            string    `json:"tiker"`
 	Type             string    `json:"type"`
+	IsOpen           bool      `json:"is_open,omitempty"`
 	Price            float64   `json:"price"`
 	Count            int       `json:"count"`
 	Lot              int       `json:"lot"`
