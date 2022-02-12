@@ -1,7 +1,11 @@
 package router
 
 import (
+	"context"
 	"errors"
+	"github.com/DBoyara/invest-helper/common"
+	sdk "github.com/TinkoffCreditSystems/invest-openapi-go-sdk"
+	"strings"
 	"time"
 
 	"github.com/DBoyara/invest-helper/pkg/models"
@@ -28,6 +32,7 @@ var (
 func SetupTradingRoutes() {
 	TRADING.Get("", GetTradingLogs)
 	TRADING.Get("/commissions", GetCommissions)
+	TRADING.Get("/tiker", GetTikerInfo)
 	TRADING.Post("", CreateTradingLog)
 	TRADING.Put("/close", CloseDeals)
 }
@@ -89,6 +94,23 @@ func GetTradingLogs(c *fiber.Ctx) error {
 	}
 
 	return c.Status(200).JSON(logs)
+}
+
+func GetTikerInfo(c *fiber.Ctx) error {
+	tiker := c.Query("tiker")
+	t := strings.ToUpper(tiker)
+	settings := common.GetSettings()
+
+	client := sdk.NewRestClient(settings.TinkoffToken)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	instruments, err := client.InstrumentByTicker(ctx, t)
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	return c.Status(200).JSON(instruments)
 }
 
 type IdList struct {
