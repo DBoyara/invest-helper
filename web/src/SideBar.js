@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Image } from 'semantic-ui-react';
+import { Menu, Image, Dropdown } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
 class SideBar extends Component {
@@ -10,17 +10,24 @@ class SideBar extends Component {
                     <Image size="mini" src="/logo192.png" />
                 </NavLink>
 
-                <Menu.Menu position="left">
-                    <NavLink component={Menu.Item} to="/pass-gen">
-                        Генератор паролей
-                    </NavLink>
-                    <NavLink component={Menu.Item} to="/trading">
-                        TradingRecord
-                    </NavLink>
-                    <NavLink component={Menu.Item} to="/trading/log">
-                        TradingLog
-                    </NavLink>
-                </Menu.Menu>
+                <Dropdown item text="Пароли">
+                    <Dropdown.Menu>
+                        <NavLink component={Dropdown.Item} to="/pass-gen">
+                            Генератор паролей
+                        </NavLink>
+                    </Dropdown.Menu>
+                </Dropdown>
+
+                <Dropdown item text="Trading">
+                    <Dropdown.Menu>
+                        <NavLink component={Menu.Item} to="/trading">
+                            TradingRecord
+                        </NavLink>
+                        <NavLink component={Menu.Item} to="/trading/log">
+                            TradingLog
+                        </NavLink>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Menu>
         );
     }

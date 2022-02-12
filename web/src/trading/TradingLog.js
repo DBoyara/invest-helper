@@ -5,14 +5,14 @@ import tradingApi from './api';
 
 export class StatusCell extends Component {
     render() {
-        if (this.props.isOpen) {
+        if (!this.props.isOpen) {
             return (
                 <Table.Cell textAlign="center">
                     <Icon name="checkmark" color="green" size="large" />
                 </Table.Cell>
             );
         }
-        if (!this.props.isOpen) {
+        if (this.props.isOpen) {
             return (
                 <Table.Cell textAlign="center">
                     <Icon name="attention" color="red" size="large" />
@@ -71,7 +71,7 @@ class ContactsTable extends Component {
                             <Table.HeaderCell>Время</Table.HeaderCell>
                             <Table.HeaderCell>Тикер</Table.HeaderCell>
                             <Table.HeaderCell>Тип</Table.HeaderCell>
-                            <Table.HeaderCell>Завершено</Table.HeaderCell>
+                            <Table.HeaderCell>Сделка завершена</Table.HeaderCell>
                             <Table.HeaderCell>Цена</Table.HeaderCell>
                             <Table.HeaderCell>Кол-во</Table.HeaderCell>
                             <Table.HeaderCell>Лотность</Table.HeaderCell>

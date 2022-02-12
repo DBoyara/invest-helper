@@ -1,3 +1,7 @@
+GET http://localhost:9000/api/trading/tiker?tiker=BABA
+Accept: application/json
+
+###
 GET http://localhost:9000/api/trading/commissions
 Accept: application/json
 

@@ -38,7 +38,7 @@ func GetTradeLogs() ([]*models.TradingLog, error) {
 
 	rows, err := connPool.Query(
 		context.Background(),
-		"select id, datetime, tiker, type, is_open, price, count, lot, amount, commission, commission_amount from trading_logs order by datetime",
+		"select id, datetime, tiker, type, is_open, price, count, lot, amount, commission, commission_amount from trading_logs order by datetime desc",
 	)
 
 	if err != nil {
@@ -67,7 +67,7 @@ func GetTradeLogsByDatetime(startDate, endDate time.Time) ([]*models.TradingLog,
 
 	rows, err := connPool.Query(
 		context.Background(),
-		"select id, datetime, tiker, type, is_open, price, count, lot, amount, commission, commission_amount from trading_logs where datetime between $1 and $2 order by datetime",
+		"select id, datetime, tiker, type, is_open, price, count, lot, amount, commission, commission_amount from trading_logs where datetime between $1 and $2 order by datetime desc",
 		startDate,
 		endDate,
 	)
