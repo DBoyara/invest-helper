@@ -2,6 +2,13 @@ package router
 
 import "math"
 
+const (
+	SELL     string = "sell"
+	BUY             = "buy"
+	FixPRICE        = "fix_price"
+	PERCENT         = "percent"
+)
+
 func round(num float64) int {
 	return int(num + math.Copysign(0.5, num))
 }

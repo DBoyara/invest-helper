@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9000/api/trading?dateStart=2022-01-28&dateEnd=2022-01-31
+GET http://localhost:9000/api/trading?showOpen=true&tikerType=equity
 Accept: application/json
 
 ###
