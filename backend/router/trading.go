@@ -25,6 +25,7 @@ func SetupTradingRoutes() {
 	TRADING.Get("", GetTradingLogs)
 	TRADING.Get("/commissions", GetCommissions)
 	TRADING.Get("/tiker", GetTikerInfo)
+	TRADING.Get("/summary/:type", GetSummary)
 	TRADING.Post("", CreateTradingLog)
 	TRADING.Put("/close", CloseDeals)
 }
@@ -114,4 +115,20 @@ func GetCommissions(c *fiber.Ctx) error {
 	}
 
 	return c.Status(200).JSON(com)
+}
+
+func GetSummary(c *fiber.Ctx) error {
+	dateStart := c.Query("dateStart", "")
+	dateEnd := c.Query("dateEnd", "")
+	showOpen := c.Query("showOpen", "false")
+	tikerType := c.Params("tikerType", "equity")
+
+	logs, err := repository.GetTradeLogs(dateStart, dateEnd, showOpen, tikerType)
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	income := countEquitySummary(logs)
+
+	return c.Status(200).JSON(income)
 }

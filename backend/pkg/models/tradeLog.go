@@ -23,3 +23,10 @@ type Commission struct {
 	Value float64 `json:"value"`
 	Type  string  `json:"type"`
 }
+
+type Summary struct {
+	Buy        float64 `json:"buy"`
+	Sell       float64 `json:"sell"`
+	Commission float64 `json:"commission"`
+	Income     float64 `json:"income"`
+}
