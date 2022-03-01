@@ -1,4 +1,4 @@
-import { Container, Icon, Header, Table, Message, Segment } from 'semantic-ui-react';
+import { Container, Icon, Header, Table, Message, Segment, Statistic } from 'semantic-ui-react';
 import { Component } from 'react';
 
 import tradingApi from './api';
@@ -95,14 +95,19 @@ class TradingLog extends Component {
             context: props.context,
             error: null,
             isLogsLoaded: false,
+            isSummaryLoaded: false,
             logs: [],
+            buy: null,
+            sell: null,
+            commission: null,
+            income: null,
         };
-
         this.handleChangeValue = this.handleChangeValue.bind(this);
     }
 
     componentDidMount() {
         this.getRecords();
+        this.getSummary();
     }
 
     handleChangeValue(field, value) {
@@ -128,8 +133,35 @@ class TradingLog extends Component {
         }
     }
 
+    async getSummary() {
+        const resp = await tradingApi.getSummary('equity');
+
+        if (resp.ok) {
+            const result = await resp.json();
+            console.log(result);
+            this.setState({
+                buy: result.buy,
+                sell: result.sell,
+                commission: result.commission,
+                income: result.income,
+                isSummaryLoaded: true,
+                error: null,
+            });
+        } else {
+            console.error(resp);
+            this.setState({
+                buy: null,
+                sell: null,
+                commission: null,
+                income: null,
+                isSummaryLoaded: true,
+                error: { message: resp },
+            });
+        }
+    }
+
     render() {
-        const { error, isLogsLoaded, logs } = this.state;
+        const { error, isLogsLoaded, isSummaryLoaded, logs, buy, sell, commission, income } = this.state;
         return (
             <Container>
                 <Header>Запись о сделке</Header>
@@ -139,6 +171,14 @@ class TradingLog extends Component {
                         <p>{error.message}</p>
                     </Message>
                 )}
+                <Segment loading={!isSummaryLoaded}>
+                    <Statistic.Group>
+                        <Statistic label="Куплено, руб." value={buy} color="green" size="small" />
+                        <Statistic label="Продано, руб." value={sell} color="red" size="small" />
+                        <Statistic label="В т.ч. комиссия, руб." value={commission} color="orange" size="small" />
+                        <Statistic label="Доходность, %" value={income} color="grey" size="small" />
+                    </Statistic.Group>
+                </Segment>
                 <Segment loading={!isLogsLoaded}>
                     <ContactsTable logs={logs} />
                 </Segment>

@@ -1,0 +1,34 @@
+name: Go-tests
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+
+jobs:
+
+  golangci:
+      name: lint
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: golangci-lint
+          uses: golangci/golangci-lint-action@v2
+
+  test:
+    name: test
+    needs: golangci
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code into the Go module directory
+        uses: actions/checkout@v2
+        
+      - name: Get dependencies
+        run: make dep
+
+      - name: Run test
+        run: make test
