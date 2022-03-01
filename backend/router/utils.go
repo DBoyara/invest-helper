@@ -36,5 +36,7 @@ func countEquitySummary(logs []*models.TradingLog) models.Summary {
 	summary.Income = (summary.Sell - summary.Buy - summary.Commission) / summary.Buy * 100
 	summary.Income = toFixed(summary.Income, 2)
 	summary.Commission = toFixed(summary.Commission, 2)
+	summary.Buy = toFixed(summary.Buy, 2)
+	summary.Sell = toFixed(summary.Sell, 2)
 	return summary
 }

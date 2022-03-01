@@ -35,9 +35,9 @@ func scanLog(rows pgx.Row, model *models.TradingLog) error {
 	)
 }
 
-func constructQuery(dateStart, dateEnd, showOpen, tikerType string) (string, error) {
+func constructQuery(dateStart, dateEnd, showOpen, tikerType, currency string) (string, error) {
 	selectQuery := fmt.Sprintf("select %s from trading_logs", selectedFields)
-	filterQuery := fmt.Sprintf("where is_open = %s and tiker_type = '%s'", showOpen, tikerType)
+	filterQuery := fmt.Sprintf("where is_open = %s and tiker_type = '%s' and currency = '%s'", showOpen, tikerType, currency)
 	orderQuery := "order by datetime desc"
 	dateFilter := ""
 
@@ -88,10 +88,10 @@ func CreateTradeLog(log *models.TradingLog) (*models.TradingLog, error) {
 	return log, err
 }
 
-func GetTradeLogs(dateStart, dateEnd, showOpen, tikerType string) ([]*models.TradingLog, error) {
+func GetTradeLogs(dateStart, dateEnd, showOpen, tikerType, currency string) ([]*models.TradingLog, error) {
 	var res []*models.TradingLog
 
-	query, err := constructQuery(dateStart, dateEnd, showOpen, tikerType)
+	query, err := constructQuery(dateStart, dateEnd, showOpen, tikerType, currency)
 	if err != nil {
 		return nil, err
 	}
