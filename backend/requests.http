@@ -2,6 +2,10 @@ GET http://localhost:9000/api/trading/tiker?tiker=BABA
 Accept: application/json
 
 ###
+GET http://localhost:9000/api/trading/summary/equity
+Accept: application/json
+
+###
 GET http://localhost:9000/api/trading/commissions
 Accept: application/json
 
@@ -15,7 +19,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9000/api/trading?dateStart=2022-01-28&dateEnd=2022-01-31
+GET http://localhost:9000/api/trading?showOpen=true&tikerType=equity
 Accept: application/json
 
 ###

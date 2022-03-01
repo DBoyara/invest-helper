@@ -16,14 +16,6 @@ import (
 
 var TRADING fiber.Router
 
-const layout = "2006-01-02"
-const (
-	SELL     string = "sell"
-	BUY             = "buy"
-	FixPRICE        = "fix_price"
-	PERCENT         = "percent"
-)
-
 var (
 	errNotValidTradeType      = errors.New("not valid trade type")
 	errNotValidCommissionType = errors.New("not valid commission type")
@@ -33,6 +25,7 @@ func SetupTradingRoutes() {
 	TRADING.Get("", GetTradingLogs)
 	TRADING.Get("/commissions", GetCommissions)
 	TRADING.Get("/tiker", GetTikerInfo)
+	TRADING.Get("/summary/:type", GetSummary)
 	TRADING.Post("", CreateTradingLog)
 	TRADING.Put("/close", CloseDeals)
 }
@@ -50,7 +43,7 @@ func CreateTradingLog(c *fiber.Ctx) error {
 		return c.Status(400).SendString(errNotValidCommissionType.Error())
 	}
 
-	log.Amount = log.Price * float64(log.Count) * float64(log.Lot)
+	log.Amount = toFixed(log.Price*float64(log.Count)*float64(log.Lot), 2)
 	if log.CommissionType == FixPRICE {
 		log.CommissionAmount = log.Commission
 	} else if log.CommissionType == PERCENT {
@@ -67,28 +60,12 @@ func CreateTradingLog(c *fiber.Ctx) error {
 }
 
 func GetTradingLogs(c *fiber.Ctx) error {
-	dateStart := c.Query("dateStart")
-	dateEnd := c.Query("dateEnd")
+	dateStart := c.Query("dateStart", "")
+	dateEnd := c.Query("dateEnd", "")
+	showOpen := c.Query("showOpen", "true")
+	tikerType := c.Query("tikerType", "equity")
 
-	if dateStart == "" && dateEnd == "" {
-		logs, err := repository.GetTradeLogs()
-		if err != nil {
-			return c.Status(500).SendString(err.Error())
-		}
-
-		return c.Status(200).JSON(logs)
-	}
-
-	DateStart, err := time.Parse(layout, dateStart)
-	if err != nil {
-		return c.Status(400).SendString(err.Error())
-	}
-	DateEnd, err := time.Parse(layout, dateEnd)
-	if err != nil {
-		return c.Status(400).SendString(err.Error())
-	}
-
-	logs, err := repository.GetTradeLogsByDatetime(DateStart, DateEnd)
+	logs, err := repository.GetTradeLogs(dateStart, dateEnd, showOpen, tikerType)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -138,4 +115,20 @@ func GetCommissions(c *fiber.Ctx) error {
 	}
 
 	return c.Status(200).JSON(com)
+}
+
+func GetSummary(c *fiber.Ctx) error {
+	dateStart := c.Query("dateStart", "")
+	dateEnd := c.Query("dateEnd", "")
+	showOpen := c.Query("showOpen", "false")
+	tikerType := c.Params("tikerType", "equity")
+
+	logs, err := repository.GetTradeLogs(dateStart, dateEnd, showOpen, tikerType)
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	income := countEquitySummary(logs)
+
+	return c.Status(200).JSON(income)
 }

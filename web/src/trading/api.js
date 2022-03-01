@@ -11,6 +11,11 @@ class TradingLogApi {
         return await api.getRequest(baseUrl, params);
     }
 
+    async getSummary(type) {
+        const uri = `${baseUrl}/summary/${type}`;
+        return await api.getRequest(uri);
+    }
+
     async getCommissions() {
         const uri = `${baseUrl}/commissions`;
         return await api.getRequest(uri);
