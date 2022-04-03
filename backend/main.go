@@ -18,7 +18,7 @@ import (
 
 var configDefaultCORS = cors.Config{
 	AllowOrigins: "*",
-	AllowMethods: "GET,POST",
+	AllowMethods: "GET,POST,PUT",
 	AllowHeaders: "*",
 }
 

@@ -41,4 +41,34 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:9000/api/futures
+Content-Type: application/json
+
+{
+  "tiker": "VTBR-3.22",
+  "is_open": true,
+  "warranty_provision": 1000,
+  "count": 2,
+  "commission": 10,
+  "commission_type": "fix_price"
+}
+
+###
+GET http://localhost:9000/api/futures
+Content-Type: application/json
+
+###
+PUT http://localhost:9000/api/futures/1
+Content-Type: application/json
+
+{
+  "margin": 1.3,
+  "is_open": false
+}
+
+###
+GET http://localhost:9000/api/futures/summary
+Accept: application/json
+
+###
 http://localhost:9000/api/health

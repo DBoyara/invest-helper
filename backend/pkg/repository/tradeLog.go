@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/DBoyara/invest-helper/pkg/models"
+
 	"github.com/jackc/pgx/v4"
 )
 

@@ -25,8 +25,10 @@ type Commission struct {
 }
 
 type Summary struct {
-	Buy        float64 `json:"buy"`
-	Sell       float64 `json:"sell"`
-	Commission float64 `json:"commission"`
-	Income     float64 `json:"income"`
+	Buy            float64 `json:"buy,omitempty"`
+	Sell           float64 `json:"sell,omitempty"`
+	TurnoverMargin float64 `json:"turnover_margin,omitempty"`
+	TurnoverWP     float64 `json:"turnover_wp,omitempty"`
+	Commission     float64 `json:"commission"`
+	Income         float64 `json:"income"`
 }

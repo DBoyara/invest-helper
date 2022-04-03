@@ -21,8 +21,8 @@ func toFixed(num float64, precision int) float64 {
 	return float64(round(num*output)) / output
 }
 
-func countEquitySummary(logs []*models.TradingLog) models.Summary {
-	summary := models.Summary{}
+func countEquitySummary(logs []*models.TradingLog) *models.Summary {
+	summary := &models.Summary{}
 
 	for _, log := range logs {
 		if log.Type == BUY {
@@ -38,5 +38,20 @@ func countEquitySummary(logs []*models.TradingLog) models.Summary {
 	summary.Commission = toFixed(summary.Commission, 2)
 	summary.Buy = toFixed(summary.Buy, 2)
 	summary.Sell = toFixed(summary.Sell, 2)
+	return summary
+}
+
+func countFuturesSummary(logs []*models.Futures) *models.Summary {
+	summary := &models.Summary{}
+
+	for _, log := range logs {
+		summary.TurnoverMargin += log.Margin
+		summary.TurnoverWP += log.WarrantyProvision
+		summary.Commission += log.CommissionAmount
+	}
+
+	summary.Income = summary.TurnoverMargin / summary.TurnoverWP * 100
+	summary.Income = toFixed(summary.Income, 2)
+	summary.Commission = toFixed(summary.Commission, 2)
 	return summary
 }

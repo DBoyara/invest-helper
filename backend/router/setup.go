@@ -17,4 +17,7 @@ func SetupRoutes(app *fiber.App) {
 
 	TRADING = api.Group("/trading")
 	SetupTradingRoutes()
+
+	FUTURES = api.Group("/futures")
+	SetupFuturesRoutes()
 }
