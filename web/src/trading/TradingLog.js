@@ -138,7 +138,6 @@ class TradingLog extends Component {
 
         if (resp.ok) {
             const result = await resp.json();
-            console.log(result);
             this.setState({
                 buy: result.buy,
                 sell: result.sell,

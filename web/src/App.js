@@ -8,6 +8,7 @@ import Main from './Main';
 import PassGen from './pass-gen/Pass-gen';
 import TradingRecord from './trading/TradingRecord';
 import TradingLog from './trading/TradingLog';
+import FuturesList from './futures/FuturesRecord';
 
 class App extends Component {
     render() {
@@ -19,6 +20,7 @@ class App extends Component {
                         <Route exact path="/pass-gen" component={PassGen} />
                         <Route exact path="/trading" component={TradingRecord} />
                         <Route exact path="/trading/log" component={TradingLog} />
+                        <Route exact path="/futures" component={FuturesList} />
                         <Route path="/" component={Main} />
                     </Switch>
                 </Container>

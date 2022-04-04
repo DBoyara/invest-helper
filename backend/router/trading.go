@@ -122,7 +122,7 @@ func GetSummary(c *fiber.Ctx) error {
 	dateStart := c.Query("dateStart", "")
 	dateEnd := c.Query("dateEnd", "")
 	showOpen := c.Query("showOpen", "false")
-	currency := c.Query("showOpen", "rub")
+	currency := c.Query("currency", "rub")
 	tikerType := c.Params("tikerType", "equity")
 
 	logs, err := repository.GetTradeLogs(dateStart, dateEnd, showOpen, tikerType, currency)

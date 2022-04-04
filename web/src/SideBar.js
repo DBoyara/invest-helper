@@ -28,6 +28,14 @@ class SideBar extends Component {
                         </NavLink>
                     </Dropdown.Menu>
                 </Dropdown>
+
+                <Dropdown item text="Фьючерсы">
+                    <Dropdown.Menu>
+                        <NavLink component={Menu.Item} to="/futures">
+                            Фьючерсы
+                        </NavLink>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Menu>
         );
     }
