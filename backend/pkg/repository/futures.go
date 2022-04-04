@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	selectedFieldsFutures string = "id, datetime, tiker, is_open, warranty_provision, count, amount, margin, commission, commission_amount"
+	selectedFieldsFutures string = "id, datetime, tiker, is_open, warranty_provision, count, amount, margin, commission"
 )
 
 func scanFutures(rows pgx.Row, model *models.Futures) error {
@@ -23,7 +23,6 @@ func scanFutures(rows pgx.Row, model *models.Futures) error {
 		&model.Amount,
 		&model.Margin,
 		&model.Commission,
-		&model.CommissionAmount,
 	)
 }
 
@@ -53,9 +52,9 @@ func CreateFuture(futures *models.Futures) (*models.Futures, error) {
 		return t.QueryRow(
 			context.Background(),
 			`insert into futures 
-				(tiker, is_open, warranty_provision, count, amount, commission, commission_amount) 
+				(tiker, is_open, warranty_provision, count, amount, commission) 
 			values 
-				($1, $2, $3, $4, $5, $6, $7) 
+				($1, $2, $3, $4, $5, $6) 
 			returning id`,
 			futures.Tiker,
 			futures.IsOpen,
@@ -63,7 +62,6 @@ func CreateFuture(futures *models.Futures) (*models.Futures, error) {
 			futures.Count,
 			futures.Amount,
 			futures.Commission,
-			futures.CommissionAmount,
 		).Scan(&futures.Id)
 	})
 
@@ -121,9 +119,10 @@ func GetSingleFutures(futuresId int64) (*models.Futures, error) {
 }
 
 func UpdateFutures(futures *models.Futures) error {
-	query := fmt.Sprintf("update futures set margin = %f, is_open = %t where id = %d",
+	query := fmt.Sprintf("update futures set margin = %f, is_open = %t, commission = %f where id = %d",
 		futures.Margin,
 		futures.IsOpen,
+		futures.Commission,
 		futures.Id)
 
 	_, err := connPool.Exec(

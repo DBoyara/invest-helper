@@ -11,8 +11,7 @@ create table if not exists futures
     count integer not null,
     amount decimal not null,
     margin decimal default 0 not null,
-    commission decimal not null,
-    commission_amount decimal not null
+    commission decimal not null
 );
 
 create index if not exists futures_datetime_idx on futures(datetime);

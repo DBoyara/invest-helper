@@ -46,11 +46,11 @@ func countFuturesSummary(logs []*models.Futures) *models.Summary {
 
 	for _, log := range logs {
 		summary.TurnoverMargin += log.Margin
-		summary.TurnoverWP += log.WarrantyProvision
-		summary.Commission += log.CommissionAmount
+		summary.TurnoverWP += log.Amount
+		summary.Commission += log.Commission
 	}
 
-	summary.Income = summary.TurnoverMargin / summary.TurnoverWP * 100
+	summary.Income = (summary.TurnoverMargin - summary.Commission) / summary.TurnoverWP * 100
 	summary.Income = toFixed(summary.Income, 2)
 	summary.Commission = toFixed(summary.Commission, 2)
 	return summary

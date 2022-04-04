@@ -12,6 +12,5 @@ type Futures struct {
 	Amount            float64   `json:"amount,omitempty"`
 	Margin            float64   `json:"margin,omitempty"`
 	Commission        float64   `json:"commission"`
-	CommissionAmount  float64   `json:"commission_amount,omitempty"`
 	CommissionType    string    `json:"commission_type,omitempty"`
 }

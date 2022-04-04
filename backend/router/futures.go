@@ -28,12 +28,6 @@ func CreateFutures(c *fiber.Ctx) error {
 	}
 
 	futures.Amount = toFixed(futures.WarrantyProvision*float64(futures.Count), 2)
-	if futures.CommissionType == FixPRICE {
-		futures.CommissionAmount = futures.Commission
-	} else if futures.CommissionType == PERCENT {
-		commissionAmount := futures.Commission * futures.Amount / 100
-		futures.CommissionAmount = toFixed(commissionAmount, 2)
-	}
 
 	res, err := repository.CreateFuture(futures)
 	if err != nil {
@@ -57,8 +51,9 @@ func GetFutures(c *fiber.Ctx) error {
 }
 
 type MarginBody struct {
-	Margin float64 `json:"margin"`
-	IsOpen bool    `json:"is_open"`
+	Margin     float64 `json:"margin"`
+	IsOpen     bool    `json:"is_open"`
+	Commission float64 `json:"commission"`
 }
 
 func UpdateFutures(c *fiber.Ctx) error {
@@ -77,8 +72,9 @@ func UpdateFutures(c *fiber.Ctx) error {
 		return c.Status(500).SendString(err.Error())
 	}
 
-	futures.Margin += marginBody.Margin
+	futures.Margin = marginBody.Margin
 	futures.IsOpen = marginBody.IsOpen
+	futures.Commission = marginBody.Commission
 	if err := repository.UpdateFutures(futures); err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -96,7 +92,7 @@ func GetFuturesSummary(c *fiber.Ctx) error {
 		return c.Status(500).SendString(err.Error())
 	}
 
-	income := countFuturesSummary(futures)
+	summary := countFuturesSummary(futures)
 
-	return c.Status(200).JSON(income)
+	return c.Status(200).JSON(summary)
 }

@@ -1,6 +1,6 @@
 import futuresApi from './api';
 import React, { Component } from 'react';
-import { Container, Header, Table, Button, Modal, Form, Message } from 'semantic-ui-react';
+import { Container, Header, Table, Button, Modal, Form, Message, Segment, Statistic } from 'semantic-ui-react';
 
 const defaultFormValues = () => ({
     tiker: '',
@@ -8,7 +8,7 @@ const defaultFormValues = () => ({
     warranty_provision: 0,
     margin: 0,
     count: 1,
-    commission: 10,
+    commission: 5,
     commission_type: 'fix_price',
 });
 
@@ -41,17 +41,50 @@ class FuturesList extends Component {
             formValues: defaultFormValues(),
             formError: null,
             isModalOpen: false,
+            isSummaryLoaded: false,
+            turnover_margin: null,
+            turnover_wp: null,
+            commission: null,
+            income: null,
+            error: null,
         };
 
         this.submitEdit = this.submitEdit.bind(this);
     }
 
     componentDidMount() {
+        this.getSummary();
         listFutures().then((data) => this.setState({ futures: data.sort((a, b) => (a.id > b.id ? 1 : -1)) }));
     }
 
     updateEditValue(key, value) {
         this.setState({ formValues: { ...this.state.formValues, [key]: value } });
+    }
+
+    async getSummary() {
+        const resp = await futuresApi.getSummary();
+
+        if (resp.ok) {
+            const result = await resp.json();
+            this.setState({
+                turnover_margin: result.turnover_margin,
+                turnover_wp: result.turnover_wp,
+                commission: result.commission,
+                income: result.income,
+                isSummaryLoaded: true,
+                error: null,
+            });
+        } else {
+            console.error(resp);
+            this.setState({
+                turnover_margin: null,
+                turnover_wp: null,
+                commission: null,
+                income: null,
+                isSummaryLoaded: true,
+                error: { message: resp },
+            });
+        }
     }
 
     submitEdit() {
@@ -121,7 +154,17 @@ class FuturesList extends Component {
     }
 
     render() {
-        const { isModalOpen, editFutures, futures, formValues } = this.state;
+        const {
+            isModalOpen,
+            editFutures,
+            futures,
+            formValues,
+            isSummaryLoaded,
+            commission,
+            income,
+            turnover_margin,
+            turnover_wp,
+        } = this.state;
 
         return (
             <Container>
@@ -138,7 +181,14 @@ class FuturesList extends Component {
                         Добавить
                     </Button>
                 </Header>
-
+                <Segment loading={!isSummaryLoaded}>
+                    <Statistic.Group>
+                        <Statistic label="ГО, руб." value={turnover_wp} color="green" size="small" />
+                        <Statistic label="Маржа, руб." value={turnover_margin} color="red" size="small" />
+                        <Statistic label="В т.ч. комиссия, руб." value={commission} color="orange" size="small" />
+                        <Statistic label="Доходность, %" value={income} color="grey" size="small" />
+                    </Statistic.Group>
+                </Segment>
                 <Table celled>
                     <Table.Header>
                         <Table.Row>

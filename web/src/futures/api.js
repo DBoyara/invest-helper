@@ -11,8 +11,8 @@ class FuturesApi {
         return await api.getRequest(baseUrl, params);
     }
 
-    async getSummary(id) {
-        const uri = `${baseUrl}/summary/${id}`;
+    async getSummary() {
+        const uri = `${baseUrl}/summary`;
         return await api.getRequest(uri);
     }
 
